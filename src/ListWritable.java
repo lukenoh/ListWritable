@@ -10,42 +10,42 @@ import java.util.List;
 
 public class ListWritable implements Writable {
 
-  private List<Integer> buff = null;
+        private List<Integer> buff = null;
 
-  public ListWritable() {
-    buff = new ArrayList<Integer>();
-  }
+        public ListWritable() {
+                buff = new ArrayList<Integer>();
+        }
 
-  public void add(int value) {
-    buff.add(value);
-  }
+        public void add(int value) {
+                buff.add(value);
+        }
 
-  @Override
-  public void read(DataInput in) throws IOException {
-// TODO Auto-generated method stub
+        @Override
+        public void read(DataInput in) throws IOException {
+                // TODO Auto-generated method stub
 
-    byte[] bytes = new byte[1024];
+                byte[] bytes = new byte[1024];
 
-    ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-    ObjectInputStream ois = new ObjectInputStream(bais);
-    try {
-      buff = (ArrayList) ois.readObject();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
+                ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                try {
+                        buff = (ArrayList) ois.readObject();
+                } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                }
 
-    System.out.println("read complete: " + buff.toString());
-  }
+                System.out.println("read complete: " + buff.toString());
+        }
 
-  @Override
-  public void write(DataOutput out) throws IOException {
-// TODO Auto-generated method stub
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    ObjectOutputStream oos = new ObjectOutputStream(baos);
+        @Override
+        public void write(DataOutput out) throws IOException {
+                // TODO Auto-generated method stub
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(baos);
 
-    oos.writeObject(buff);
+                oos.writeObject(buff);
 
-    out.write(baos.toByteArray());
-  }
+                out.write(baos.toByteArray());
+        }
 
 }
