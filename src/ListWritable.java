@@ -30,7 +30,9 @@ public class ListWritable implements Writable {
                 int sizeOfData = 0;
                 try {
                         sizeOfData = in.readInt();
-
+                        if(sizeOfData > 0) {
+                                buff = new ArrayList<>();
+                        }
                         for (int i = 0; i <= sizeOfData; i++) {
                                 buff.add(in.readInt());
                         }
