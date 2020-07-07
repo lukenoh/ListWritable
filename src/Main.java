@@ -1,24 +1,47 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
 
-        public static String FILE_PATH = "C:\\workspace\\git\\edwards-class\\ListWritable\\";
-//public static String FILE_PATH = "/";
-        public static void main(String[] args) {
-                ListWritable listWritable = new ListWritable();
-                listWritable.add(1);
-                listWritable.add(2);
-                listWritable.add(3);
-                listWritable.add(999);
+  public static void main(String[] args) {
+    ListWritable listWritable = new ListWritable();
+    listWritable.add(1);
+    listWritable.add(2);
+    listWritable.add(3);
+    listWritable.add(999);
 
-                listWritable.writeToDisk(FILE_PATH + "serialized.ser");
-                listWritable.readFromDisk(FILE_PATH + "serialized.ser");
+    byte[] bytes = serialize(listWritable);
+    
+    ListWritable l = new ListWritable();
+    deserialize(bytes, l);
+    
+    for(int i = 0; i < l.size(); i++) {
+      System.out.println(l.get(i));
+    }
+  }
 
-        }
+  public static byte[] serialize(Writable w) {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    DataOutput output = new DataOutputStream(out);
+    try {
+      w.write(output);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return out.toByteArray();
+
+  }
+  
+  public static void deserialize(byte[] bytes, Writable obj) {
+    DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
+    try {
+      obj.read(in);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }
