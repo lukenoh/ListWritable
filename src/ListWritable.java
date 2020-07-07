@@ -30,10 +30,10 @@ public class ListWritable implements Writable {
                 int sizeOfData = 0;
                 try {
                         sizeOfData = in.readInt();
-                        if(sizeOfData > 0) {
+                        if (sizeOfData > 0) {
                                 buff = new ArrayList<>();
                         }
-                        for (int i = 0; i <= sizeOfData; i++) {
+                        for (int i = 0; i < sizeOfData; i++) {
                                 buff.add(in.readInt());
                         }
                 } catch (IOException e) {
@@ -46,7 +46,7 @@ public class ListWritable implements Writable {
         public void write(DataOutput out) throws IOException {
                 // TODO Auto-generated method stub
                 out.writeInt(buff.size());
-                for(Integer num: buff) {
+                for (Integer num : buff) {
                         out.writeInt(num);
                 }
         }
@@ -70,12 +70,16 @@ public class ListWritable implements Writable {
                 try {
 
                         if (!file.createNewFile()) {
-                                boolean isDeleted = file.delete();
-                                System.out.println("isCreated: "+ file.createNewFile());
+                                System.out.println("file already exists");
+
+                                if(file.delete()) {
+                                        System.out.println("file deleted");
+                                }
+                                if(file.createNewFile()) {
+                                        System.out.println("new file generated");
+                                }
                         } else {
-
-
-                                System.out.println("File already exists.");
+                                System.out.println("new file generated");
                         }
                 } catch (IOException e) {
                         e.printStackTrace();
