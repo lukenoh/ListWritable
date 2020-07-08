@@ -7,10 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.file.Files;
 
 public class Main {
-
 
   public static void main(String[] args) {
     ListWritable listWritable = new ListWritable();
@@ -19,23 +19,31 @@ public class Main {
     listWritable.add(3);
     listWritable.add(999);
 
-//    byte[] bytes = serialize(listWritable);
-
-//    ListWritable l = new ListWritable();
-//    deserialize(bytes, l);
-//
-//    for (int i = 0; i < l.size(); i++) {
-//      System.out.println(l.get(i));
-//    }
-
-
+    //    byte[] bytes = serialize(listWritable);
+    //    ListWritable l = new ListWritable();
+    //    deserialize(bytes, l);
+    //    for (int i = 0; i < l.size(); i++) {
+    //      System.out.println(l.get(i));
+    //    }
 
     writeToDisk("serialize.se", listWritable);
-    ListWritable w = (ListWritable)readFromDisk("serialize.se");
+    ListWritable w = (ListWritable) readFromDisk("serialize.se");
 
-    for(int i = 0; i < w.size(); i++) {
+    for (int i = 0; i < w.size(); i++) {
       System.out.println(w.get(i));
     }
+
+    // 서버 시작
+    Server server = RPC.server(ADDRESS, PORT);
+    server.start;
+
+    // 프록시 생성
+    InetSOcketAddress adds = new InetSocketAddress(PORT);
+    Protocol proxy = (Protocol) RPC.getProxy(Protocol.class, addr);
+
+    // RPC 메서드 콜
+    String result = proxy.echo(new StringWritable(“foo”);
+    System.out.println(result);
 
   }
 
@@ -93,7 +101,7 @@ public class Main {
   public static Writable readFromDisk(String filePath) {
     try {
       File file = new File(filePath);
-      if(!file.exists()) {
+      if (!file.exists()) {
         System.out.println("file does not exist!");
         return null;
       }
@@ -112,5 +120,11 @@ public class Main {
     }
 
     return null;
+  }
+
+  public static Writable echo(Writable writable) {
+
+    return writable;
+
   }
 }
